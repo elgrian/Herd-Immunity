@@ -54,13 +54,15 @@ class Person(object):
         # TODO:  Finish this method. Follow the instructions in the class documentation
         # for resolve_infection.  If person dies, set is_alive to False and return False.
         # If person lives, set is_vaccinated = True, infection = None, return True.
-        random_number = random.randint(0, 1)
+        mortality_chance = random.randint(0, 1)
         while self.infection != None:
-            if random_number < mortality_rate:
+            if mortality_chance < mortality_rate:  ### Possibly come back to this if you have an error, MAYBE change the order
                 self.is_alive = False
+                print("Oh no! They Died!")
 
-            else if random_number > mortality_rate:
+            else if mortality_chance > mortality_rate:
                 self.is_alive = True
                 self.is_vaccinated = True
                 self.infection = None
+                print("Woohoo, they beat the virus!")
         pass

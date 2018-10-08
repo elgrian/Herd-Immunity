@@ -36,7 +36,7 @@ class Logger(object):
 
     log_time_step(self, time_step_number):
         - 1. Expects time_step_number as an Int.
-        - 2. A) This method should write a log telling us when one time step ends, and
+        - 2. This method should write a log telling us when one time step ends, and
             the next time step begins.  B) The format of this log should be:
                 "Time step {time_step_number} ended, beginning {time_step_number + 1}..."
 
@@ -54,7 +54,8 @@ class Logger(object):
     def __init__(self, file_name):
         # TODO:  Finish this initialization method.  The file_name passed should be the
         # full file name of the file that the logs will be written to.
-        self.file_name = Non\']/\e
+        self.file_name = file_name
+        #Come back to self.saved = 0
 
     def write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate,
                        basic_repro_num):
