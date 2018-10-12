@@ -66,12 +66,12 @@ class Simulation(object):
         self.population = []
         self.total_infected = 0     #Amount of people infected with whatever
         self.current_infected = 0   #At Risk
-        self.total_died = 0
         self.next_person_id = 0
         self.virus_name = virus_name
         self.mortality_rate = mortality_rate
         self.died = 0
         self.vacc_percentage = vacc_percentage
+        self.infected_count = initial_infected
         self.rate_of_infection = rate_of_infection
         self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(virus_name, population_size, vacc_percentage, initial_infected)
 
@@ -129,7 +129,7 @@ class Simulation(object):
         #     - The entire population is died.
         #     - There are no infected people left in the population.
         # In all other instances, the simulation should continue.
-        if self.population_size == died  or current_infected == 0:
+        if self.died == self.population_size  or current_infected == 0:
             return False
         else:
             return True
@@ -195,7 +195,7 @@ class Simulation(object):
                             did_survive = person.did_survive_infection(self.mortality_rate)
                             self.logger.log_infection_survival(person, did_survive)
                             if(not did_survive):
-                                self.dead+=1
+                                self.died+=1
                             self.infected_count-=1
                 # End of borrowed code
         self._infect_newly_infected()
@@ -229,7 +229,7 @@ class Simulation(object):
             else:
                 self.logger.log_interaction(infected_person, random_person, False, False, True)
         else:
-            self.logger.log_interaction(infection_person, random_person, False, True, False)
+            self.logger.log_interaction(infected_person, random_person, False, True, False)
 
         pass
 

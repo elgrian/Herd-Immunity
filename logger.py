@@ -48,7 +48,7 @@ class Logger(object):
     #                 - 3. The number of people that died on this specific time step.
     #                 - 4. The total number of people infected in the population, including the newly
     #                     infected
-    #                 - 5. The total number of dead, including those that died during this time step.
+    #                 - 5. The total number of died, including those that died during this time step.
 
 
     def __init__(self, file_name):
@@ -70,11 +70,11 @@ class Logger(object):
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
         file = open(self.file_name, "w")
-        file.write("Population size is: " + population_size)
-        file.write("Vaccine percentage is: " + vacc_percentage + "%")
+        file.write("Population size is: " + str(population_size))
+        file.write("Vaccine percentage is: " + str(vacc_percentage) + "%")
         file.write("The name of the virus is: " + virus_name)
-        file.write("The mortality rate is: " + mortality_rate)
-        file.write("The basic reproduction number is " + basic_repro_num)
+        file.write("The mortality rate is: " + str(mortality_rate))
+        file.write("The basic reproduction number is " + str(basic_repro_num))
 
         #file.write("Population size is: " population_size + "\t The Vaccine percentage is: " + vacc_percentage + "%" + "\t The name of the virus is: " + virus_name + "\t The mortality rate is: " + mortality_rate + "\t The basic reproduction number is: " + basic_repro_num)
 
@@ -114,9 +114,9 @@ class Logger(object):
         # event logged ends up on a separate line!
         file = open(self.file_name, "a")
         if did_die_from_infection == False:
-            file.write("Sweet! person: " + person._id + " survived the infection! \t")
+            file.write("Sweet! person: " + str(person._id) + " survived the infection! \t")
         else:
-            file.write("Oh no! person: " + person._id + " did not survive the infection! :( \t")
+            file.write("Oh no! person: " + str(person._id) + " did not survive the infection! :( \t")
 
 
     def log_time_step(self, time_step_number):
@@ -124,7 +124,7 @@ class Logger(object):
         # new one begins.  See the documentation for more information on the format of the log.
         # NOTE: Stretch challenge opportunity! Modify this method so that at the end of each time
         # step, it also logs a summary of what happened in that time step, including the number of
-        # people infected, the number of people dead, etc.  You may want to create a helper class
+        # people infected, the number of people died, etc.  You may want to create a helper class
         # to compute these statistics for you, as a Logger's job is just to write logs!
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
