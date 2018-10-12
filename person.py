@@ -50,7 +50,7 @@ class Person(object):
         self.infection = infection
 
 
-    def did_survive_infection():
+    def did_survive_infection(self, mortality_rate):
         # TODO:  Finish this method. Follow the instructions in the class documentation
         # for resolve_infection.  If person dies, set is_alive to False and return False.
         # If person lives, set is_vaccinated = True, infection = None, return True.
@@ -60,7 +60,7 @@ class Person(object):
                 self.is_alive = False
                 print("Oh no! They Died!")
 
-            else if mortality_chance > mortality_rate:
+            elif mortality_chance > mortality_rate:
                 self.is_alive = True
                 self.is_vaccinated = True
                 self.infection = None

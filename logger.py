@@ -1,61 +1,61 @@
 class Logger(object):
-    '''
-    Utility class responsible for logging all interactions of note during the
-    simulation.
-    _____Attributes______
-    - file_name: the name of the file that the logger will be writing to.
+    #
+    # Utility class responsible for logging all interactions of note during the
+    # simulation.
+    # _____Attributes______
+    # - file_name: the name of the file that the logger will be writing to.
+    #
+    #
+    # _____Methods_____
+    # __init__(self, file_name):
+    # write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate,
+    #     basic_repro_num):
+    #     - 1. Writes the first line of a logfile, which will contain metadata on the
+    #         parameters for the simulation.
+    #
+    #
+    # log_interaction(self, person1, person2, did_infect=None, person2_vacc=None, person2_sick=None):
+    #     - 1. Expects person1 and person2 as person objects.
+    #     - 2. Expects did_infect, person2_vacc, and person2_sick as Booleans, if passed.
+    #     - 3. Between the values passed with did_infect, person2_vacc, and person2_sick, this method
+    #         should be able to determine exactly what happened in the interaction and create a String
+    #         saying so.
+    #     - 4. The format of the log should be "{person1.ID} infects {person2.ID}", or, for other edge
+    #         cases, "{person1.ID} didn't infect {person2.ID} because {'vaccinated' or 'already sick'}"
+    #     - 5. Appends the interaction to logfile.
+    #
+    #
+    # log_infection_survival(self, person, did_die_from_infection):
+    #     - 1. Expects person as Person object.
+    #     - 2. Expects bool for did_die_from_infection, with True denoting they died from
+    #         their infection and False denoting they survived and became immune.
+    #     - 3. The format of the log should be "{person.ID} died from infection" or
+    #         "{person.ID} survived infection."
+    #     - 4. Appends the results of the infection to the logfile.
+    #
+    #
+    # log_time_step(self, time_step_number):
+    #     - 1. Expects time_step_number as an Int.
+    #     - 2. This method should write a log telling us when one time step ends, and
+    #         the next time step begins.  B) The format of this log should be:
+    #             "Time step {time_step_number} ended, beginning {time_step_number + 1}..."
+    #
+    #
+    #     - STRETCH CHALLENGE DETAILS:
+    #         - 1. If you choose to extend this method, the format of the summary statistics logged
+    #             are up to you.  At minimum, it should contain:
+    #                 - 2. The number of people that were infected during this specific time step.
+    #                 - 3. The number of people that died on this specific time step.
+    #                 - 4. The total number of people infected in the population, including the newly
+    #                     infected
+    #                 - 5. The total number of dead, including those that died during this time step.
 
-
-    _____Methods_____
-    __init__(self, file_name):
-    write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate,
-        basic_repro_num):
-        - 1. Writes the first line of a logfile, which will contain metadata on the
-            parameters for the simulation.
-
-
-    log_interaction(self, person1, person2, did_infect=None, person2_vacc=None, person2_sick=None):
-        - 1. Expects person1 and person2 as person objects.
-        - 2. Expects did_infect, person2_vacc, and person2_sick as Booleans, if passed.
-        - 3. Between the values passed with did_infect, person2_vacc, and person2_sick, this method
-            should be able to determine exactly what happened in the interaction and create a String
-            saying so.
-        - 4. The format of the log should be "{person1.ID} infects {person2.ID}", or, for other edge
-            cases, "{person1.ID} didn't infect {person2.ID} because {'vaccinated' or 'already sick'}"
-        - 5. Appends the interaction to logfile.
-
-
-    log_infection_survival(self, person, did_die_from_infection):
-        - 1. Expects person as Person object.
-        - 2. Expects bool for did_die_from_infection, with True denoting they died from
-            their infection and False denoting they survived and became immune.
-        - 3. The format of the log should be "{person.ID} died from infection" or
-            "{person.ID} survived infection."
-        - 4. Appends the results of the infection to the logfile.
-
-
-    log_time_step(self, time_step_number):
-        - 1. Expects time_step_number as an Int.
-        - 2. This method should write a log telling us when one time step ends, and
-            the next time step begins.  B) The format of this log should be:
-                "Time step {time_step_number} ended, beginning {time_step_number + 1}..."
-
-
-        - STRETCH CHALLENGE DETAILS:
-            - 1. If you choose to extend this method, the format of the summary statistics logged
-                are up to you.  At minimum, it should contain:
-                    - 2. The number of people that were infected during this specific time step.
-                    - 3. The number of people that died on this specific time step.
-                    - 4. The total number of people infected in the population, including the newly
-                        infected
-                    - 5. The total number of dead, including those that died during this time step.
-    '''
 
     def __init__(self, file_name):
         # TODO:  Finish this initialization method.  The file_name passed should be the
         # full file name of the file that the logs will be written to.
         self.file_name = file_name
-        'Come back to self.saved = 0'
+        #Come back to self.saved = 0
 
     def write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate,
                        basic_repro_num):
@@ -70,7 +70,7 @@ class Logger(object):
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
         file = open(self.file_name, "w")
-        file.write("Population size is: " population_size)
+        file.write("Population size is: " + population_size)
         file.write("Vaccine percentage is: " + vacc_percentage + "%")
         file.write("The name of the virus is: " + virus_name)
         file.write("The mortality rate is: " + mortality_rate)
@@ -93,15 +93,15 @@ class Logger(object):
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
 
-    file = open(self.file_name, "a")
-    if(did_infect):
-        file.write("Person: " + person1._id + " infected Person: " + person2._id + ". \t")
-    else if(person2_vacc):
-        file.write("Person: " + person1._id + " couldn't infect: " + person2._id + " because they already got vaccinated. \t")
-    else if(person2_sick):
-        file.write("Person: " + person1._id + " can't infect person: " + person2._id + " because person: " + person2._id + " was already sick. \t")
-    else:
-        file.write("Person: " + person1._id + " wasn't able to infect person: " + person2._id + ". \t")
+        file = open(self.file_name, "a")
+        if(did_infect):
+            file.write("Person: " + str(person1._id) + " infected Person: " + str(person2._id) + ". \t")
+        elif(person2_vacc):
+            file.write("Person: " + str(person1._id) + " couldn't infect: " + str(person2._id) + " because they already got vaccinated. \t")
+        elif(person2_sick):
+            file.write("Person: " + str(person1._id) + " can't infect person: " + str(person2._id) + " because person: " + str(person2._id) + " was already sick. \t")
+        else:
+            file.write("Person: " + str(person1._id) + " wasn't able to infect person: " + str(person2._id) + ". \t")
 
 
     def log_infection_survival(self, person, did_die_from_infection): #Maybe did_die_from_infection should be did_survive_infection ????
@@ -129,5 +129,4 @@ class Logger(object):
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
         file = open(self.file_name, "a")
-        file.write("This is the beginning of time step: " + time_step_number)
-        
+        file.write("This is the beginning of time step: " + str(time_step_number))

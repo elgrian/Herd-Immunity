@@ -35,7 +35,7 @@ class Simulation(object):
     #
     # - total_infected: Int.  The running total of people that have been infected since the simulation began, including any people currently infected.
     #
-    # - total_dead: Int.  The number of people that have died as a result of the infection during this simulation.  Starts at zero.
+    # - total_died: Int.  The number of people that have died as a result of the infection during this simulation.  Starts at zero.
     #
     #
     # _____Methods_____
@@ -66,20 +66,19 @@ class Simulation(object):
         self.population = []
         self.total_infected = 0     #Amount of people infected with whatever
         self.current_infected = 0   #At Risk
-        self.total_dead = 0
+        self.total_died = 0
         self.next_person_id = 0
         self.virus_name = virus_name
         self.mortality_rate = mortality_rate
         self.died = 0
         self.vacc_percentage = vacc_percentage
         self.rate_of_infection = rate_of_infection
-        self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
-            virus_name, population_size, vacc_percentage, initial_infected)
+        self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(virus_name, population_size, vacc_percentage, initial_infected)
 
         # TODO: Create a Logger object and bind it to self.logger.  You should use this
         # logger object to log all events of any importance during the simulation.  Don't forget
         # to call these logger methods in the corresponding parts of the simulation!
-        self.logger = Logger(file_name)
+        self.logger = Logger(self.file_name)
 
         # This attribute will be used to keep track of all the people that catch
         # the infection during a given time step. We'll store each newly infected
@@ -91,7 +90,7 @@ class Simulation(object):
 
 
         # Store the array that this method will return in the self.population attribute.
-        self.population = self._create_population(self, initial_infected) #hmm
+        self.population = self._create_population(initial_infected) #hmm
 
     def _create_population(self, initial_infected):
         # TODO: Finish this method!  This method should be called when the simulation
@@ -100,26 +99,24 @@ class Simulation(object):
         # simulation (correct number of people in the population, correct percentage of
         # people vaccinated, correct number of initially infected people).
         population = []
-        infected_count = 0
+        # infected_count = 0
         # TODO: Create all the infected people first, and then worry about the rest.
         # Don't forget to increment infected_count every time you create a
         # new infected person!
-        for person in range(initial_infection):
-            population.append(Person(person, False, self.virus_name)
+        for ppl in range(initial_infected):
+            population.append(Person(ppl, False, self.virus_name))
 
         # Now create all the rest of the people.
         # Every time a new person will be created, generate a random number between
         # 0 and 1.  If this number is smaller than vacc_percentage, this person
         # should be created as a vaccinated person. If not, the person should be
         # created as an unvaccinated person.
-        for person in range(initial_infected, self.population - initial_infected)):
+        for ppl in range(initial_infected, self.population_size - initial_infected):
             if random.random() < vacc_percentage:
-                population.append(Person(person, True))
-                self.next_person_id += 1
+                population.append(Person(ppl, True))
 
             else:
-                population.append(Person(person, False))
-                self.next_person_id += 1
+                population.append(Person(ppl, False))
             # TODO: After any Person object is created, whether sick or healthy,
             # you will need to increment self.next_person_id by 1. Each Person object's
             # ID has to be unique!
@@ -129,17 +126,17 @@ class Simulation(object):
         # TODO: Complete this method!  This method should return True if the simulation
         # should continue, or False if it should not.  The simulation should end under
         # any of the following circumstances:
-        #     - The entire population is dead.
+        #     - The entire population is died.
         #     - There are no infected people left in the population.
         # In all other instances, the simulation should continue.
-        if self.population == died or current_infected == 0:
+        if self.population_size == died  or current_infected == 0:
             return False
         else:
             return True
 
     def run(self):
         # TODO: Finish this method.  This method should run the simulation until
-        # everyone in the simulation is dead, or the disease no longer exists in the
+        # everyone in the simulation is died, or the disease no longer exists in the
         # population. To simplify the logic here, we will use the helper method
         # _simulation_should_continue() to tell us whether or not we should continue
         # the simulation and run at least 1 more time_step.
@@ -171,34 +168,44 @@ class Simulation(object):
             # - For each infected person in the population:
             #        - Repeat for 100 total interactions:
             #             - Grab a random person from the population.
-            #           - If the person is dead, continue and grab another new
+            #           - If the person is died, continue and grab another new
             #                 person from the population. Since we don't interact
-            #                 with dead people, this does not count as an interaction.
+            #                 with died people, this does not count as an interaction.
             #           - Else:
             #               - Call simulation.interaction(person, random_person)
             #               - Increment interaction counter by 1.
-            interactions = 0
-            infected_array = []
-            for person in self.population:
-                if person.infected != None:
-                    infected_array.append(person._id)
 
-                    while interactions <= 100:
-                        chosen_person = random.randint(0, len(self.population) - 1)
-                            if person.is_alive == True:
-                                person.simulation.interaction(infected_array, chosen_person)
-                                interactions += 1
-                    #maybe come back to this    find.random(person)
-                    # chosen_person = random(person._id)
-                    else: interactions = interactions + 0
+            # Taken mostly from 'ericanaglik' https://github.com/ericanaglik/herd_immunity/blob/master/simulation.py line 115 - 135
+        infected_people = []
+        for person in self.population:
+            if person.infection != None:
+                infected_people.append(person._id)
 
+                for infected_person in infected_people:
+                    for encounter in range(100):
+                        random_person = None
+                        while random_person == None:
+                            chosen_person = self.population[random.randint(0, len(self.population) - 1)]
+                            if chosen_person.is_alive:
+                                random_person = chosen_person
+                        # print(random_person._id)
+                        self.interaction(self.population[infected_person], random_person)
+                        for infected_person in infected_people:
+                            person = self.population[infected_person]
+                            did_survive = person.did_survive_infection(self.mortality_rate)
+                            self.logger.log_infection_survival(person, did_survive)
+                            if(not did_survive):
+                                self.dead+=1
+                            self.infected_count-=1
+                # End of borrowed code
+        self._infect_newly_infected()
 
-    def interaction(self, person, random_person):
+    def interaction(self, infected_person, random_person):
         # TODO: Finish this method! This method should be called any time two living
         # people are selected for an interaction.  That means that only living people
         # should be passed into this method.  Assert statements are included to make sure
         # that this doesn't happen.
-        assert person1.is_alive == True
+        assert infected_person.is_alive == True
         assert random_person.is_alive == True
 
         # The possible cases you'll need to cover are listed below:
@@ -212,17 +219,17 @@ class Simulation(object):
             #     Simulation object's newly_infected array, so that their .infected
             #     attribute can be changed to True at the end of the time step.
         # TODO: Remember to call self.logger.log_interaction() during this method!
-        if chosen_person.is_vaccinated == False:
-            if chosen_person.infection == None:
+        if random_person.is_vaccinated == False:
+            if random_person.infection == None:
                 if random.random() < rate_of_infection_num:
-                    self.newly_infected.append(chosen_person._id)
-                    self.logger.log_interaction(person, chosen_person, True, False, False)
+                    self.newly_infected.append(random_person._id)
+                    self.logger.log_interaction(infected_person, random_person, True, False, False)
                 else:
-                    self.logger.log_interaction(person, chosen_person, False, False, False)
+                    self.logger.log_interaction(infected_person, random_person, False, False, False)
             else:
-                self.logger.log_interaction(person, chosen_person, False, False, True)
+                self.logger.log_interaction(infected_person, random_person, False, False, True)
         else:
-            self.logger.log_interaction(person, chosen_person, False, True, False)
+            self.logger.log_interaction(infection_person, random_person, False, True, False)
 
         pass
 
