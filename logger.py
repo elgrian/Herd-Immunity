@@ -70,13 +70,9 @@ class Logger(object):
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
         file = open(self.file_name, "w")
-        file.write("Population size is: " + str(population_size))
-        file.write("Vaccine percentage is: " + str(vacc_percentage) + "%")
-        file.write("The name of the virus is: " + virus_name)
-        file.write("The mortality rate is: " + str(mortality_rate))
-        file.write("The basic reproduction number is " + str(basic_repro_num))
+        
 
-        #file.write("Population size is: " population_size + "\t The Vaccine percentage is: " + vacc_percentage + "%" + "\t The name of the virus is: " + virus_name + "\t The mortality rate is: " + mortality_rate + "\t The basic reproduction number is: " + basic_repro_num)
+        file.write("Population size is: " + population_size + "\t Vacc Percentage is: " + vacc_percentage + "\t Virus Name is: "+ virus_name + "\t Mortality Rate is: " + mortality_rate + "\t Infection Rate is: " + basic_repro_num + "\n")
 
 
     def log_interaction(self, person1, person2, did_infect = None,
@@ -95,14 +91,13 @@ class Logger(object):
 
         file = open(self.file_name, "a")
         if(did_infect):
-            file.write("Person: " + str(person1._id) + " infected Person: " + str(person2._id) + ". \t")
+            file.write("Person: {} infected Person: {}\n".format(person1._id,person2._id))
         elif(person2_vacc):
-            file.write("Person: " + str(person1._id) + " couldn't infect: " + str(person2._id) + " because they already got vaccinated. \t")
+            file.write("Person: {} was unable to infect Person: {} because they had been vaccinated\n".format(person1._id,person2._id))
         elif(person2_sick):
-            file.write("Person: " + str(person1._id) + " can't infect person: " + str(person2._id) + " because person: " + str(person2._id) + " was already sick. \t")
+            file.write("Person: {} was unable to infect Person: {} because they were already ill\n".format(person1._id,person2._id))
         else:
-            file.write("Person: " + str(person1._id) + " wasn't able to infect person: " + str(person2._id) + ". \t")
-
+            file.write("Person: {} was unable to infect Person: {} \n".format(person1._id,person2._id))
 
     def log_infection_survival(self, person, did_die_from_infection): #Maybe did_die_from_infection should be did_survive_infection ????
         # TODO: Finish this method.  The Simulation object should use this method to log
@@ -113,11 +108,10 @@ class Logger(object):
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
         file = open(self.file_name, "a")
-        if did_die_from_infection == False:
-            file.write("Sweet! person: " + str(person._id) + " survived the infection! \t")
+        if did_die_from_infection:
+            file.write("Oh no! Person: " + str(person._id) + " has died. \n")
         else:
-            file.write("Oh no! person: " + str(person._id) + " did not survive the infection! :( \t")
-
+            file.write("Yay! Person: " + str(person._id) + " has survived.\n")
 
     def log_time_step(self, time_step_number):
         # TODO: Finish this method.  This method should log when a time step ends, and a
@@ -129,4 +123,4 @@ class Logger(object):
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
         file = open(self.file_name, "a")
-        file.write("This is the beginning of time step: " + str(time_step_number))
+        file.write("This is the beginning of time step: " + str(time_step_number)+ "\n")

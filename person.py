@@ -58,11 +58,12 @@ class Person(object):
         while self.infection != None:
             if mortality_chance < mortality_rate:  ### Possibly come back to this if you have an error, MAYBE change the order
                 self.is_alive = False
+                self.infection = None
 
 
             elif mortality_chance > mortality_rate:
                 self.is_alive = True
                 self.is_vaccinated = True
                 self.infection = None
-                
+                return True
         pass
